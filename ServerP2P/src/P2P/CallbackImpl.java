@@ -21,8 +21,18 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package PeertoPeer;
+package P2P;
 
-public interface IArquivo {
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
+/**
+ *
+ * @author jefferson
+ */
+public class CallbackImpl extends UnicastRemoteObject implements ICallback {
     
+    public CallbackImpl() throws RemoteException {
+        super();
+    }
 }
