@@ -29,8 +29,7 @@ import java.io.InputStreamReader;
 import java.rmi.RemoteException;
 import java.rmi.registry.*;
 import java.rmi.registry.LocateRegistry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.File;
 
 /**
  *
@@ -47,6 +46,7 @@ public class Cliente {
     private String usuario;
     private String folderUp;
     private String folderDown;
+    private String[] arquivosUp;
     
     public Cliente(String ip, Integer porta) {
         this.ip = ip;
@@ -59,6 +59,7 @@ public class Cliente {
     }
 
     private void executar() {
+        File file = null;
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("Usuario: ");
         try {
@@ -70,6 +71,14 @@ public class Cliente {
         System.out.print("Caminho da pasta compartilhada: ");
         try {
             folderUp = in.readLine();
+            file = new File(folderUp);
+            File[] x = file.listFiles();
+            Integer i = 0;
+            for(File y : x) {
+                if(y.isFile())
+                    arquivosUp[i++] = y.getName();
+            }
+            
         } catch (IOException ex) {
             System.err.println("Digitação incorreta");                     
         }
@@ -99,12 +108,18 @@ public class Cliente {
             }
             comando = str.split(" ");
             
-            if(comando[0].equals("down")) {//faz download de um arquivo
-                System.out.println("ls");
-            } else if(comando[0].equals("ls")) { //mostra todos os arquivos
-                System.out.println("ls");
-            } else {
-                System.out.println(comando[0] + "not found");
+            switch (comando[0]) {
+                case "down":
+                    //faz download de um arquivo
+                    System.out.println("ls");
+                    break;
+                case "ls":
+                    //mostra todos os arquivos
+                    System.out.println();
+                    break;
+                default:
+                    System.out.println(comando[0] + "not found");
+                    break;
             }
             
         } while(!comando[0].equals("exit"));
