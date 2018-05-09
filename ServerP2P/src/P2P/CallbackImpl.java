@@ -31,8 +31,10 @@ import java.rmi.server.UnicastRemoteObject;
  * @author jefferson
  */
 public class CallbackImpl extends UnicastRemoteObject implements ICallback {
-    
+
     public CallbackImpl() throws RemoteException {
         super();
     }
+    
+    
 }

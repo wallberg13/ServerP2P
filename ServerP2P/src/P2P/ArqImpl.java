@@ -27,6 +27,6 @@ package P2P;
  *
  * @author jefferson
  */
-public interface IArquivo {
+public class ArqImpl {
     
 }

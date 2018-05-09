@@ -32,11 +32,12 @@ import java.util.ArrayList;
  * @author jefferson
  */
 public class Servidor {
-    ArrayList<IArquivo> arquivoscompartilhados;
+    IArquivo arquivoscompartilhados;
+    Registry registro;
     public Servidor(Integer porta) {
         try {
             //Criando servidor de registros;
-            Registry registro = LocateRegistry.createRegistry(porta);
+            registro = LocateRegistry.createRegistry(porta);
             System.out.println("Servidor de registros criado");
         } catch (RemoteException e) {
             System.err.println("Erro na conexão: " + e.getMessage());
@@ -50,7 +51,9 @@ public class Servidor {
     }
 
     private void hostear() {
-        
+        try {
+        } catch (Exception e) {
+        }
     }
 }
 

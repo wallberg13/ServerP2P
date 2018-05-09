@@ -23,39 +23,30 @@ SOFTWARE.
  */
 package P2P;
 
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
  *
  * @author jefferson
  */
-public class ArqImplement extends UnicastRemoteObject implements IArquivo{
+public class Usuario implements Serializable{
     private final String nome;
-    private final Integer tamanho;///utilizando tamanho em bytes
+    private final String pasta;
     private final ICallback callback;
-    
-    public ArqImplement(String nome, Integer tamanho, ICallback callback) throws RemoteException {      
-        super();
+
+    public Usuario(String nome, String pasta, ICallback callback) {
         this.nome = nome;
-        this.tamanho = tamanho;
+        this.pasta = pasta;
         this.callback = callback;
     }
 
-    @Override
-    public ArrayList<IArquivo> getArquivos() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String getNome() {
+        return nome;
     }
 
-    @Override
-    public ICallback Download(String Arquivo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String getPasta() {
+        return pasta;
     }
-
-    @Override
-    public void Upload(ICallback callback) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
- 
+    
+    
 }
