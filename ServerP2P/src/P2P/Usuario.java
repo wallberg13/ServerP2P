@@ -23,23 +23,41 @@ SOFTWARE.
  */
 package P2P;
 
-import java.rmi.*;
+import java.io.Serializable;
 
 /**
  *
- * @author sir-berg
+ * @author jefferson
  */
-public interface ICallback extends Remote {
-    public void loginUser(String nome, String dirUp, String dirDown) throws RemoteException;
-    public void logoutUser(String nome) throws RemoteException;
+public class Usuario implements Serializable{
+    private final String nome;
+    private final String dirUp;
+    private final String dirDown;
+    private final ICallback callback;
+    //private ArrayList<Arquivos> arquivos;
+
+    public Usuario(String nome, String dirUp, String dirDown, ICallback callback) {
+        this.nome = nome;
+        this.dirUp = dirUp;
+        this.dirDown = dirDown;
+        this.callback = callback;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getDirUp() {
+        return dirUp;
+    }
+
+    public String getDirDown() {
+        return dirDown;
+    }
+
+    public ICallback getCallback() {
+        return callback;
+    }
     
-    /** 
-     * Método que tem como função
-     * 
-     * @param nome
-     * @param file
-     * @throws java.rmi.RemoteException
-     */
-    public void uploadFile(String nome, String file)throws RemoteException;
-    public void downloadFile(String nome, String file)throws RemoteException;
+    
 }

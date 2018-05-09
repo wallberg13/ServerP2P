@@ -42,7 +42,7 @@ public class Cliente {
     private final String ip;
     private final Integer porta;
     
-//    private Usuario user;
+    private Usuario user;
     private String usuario;
     private String folderUp;
     private String folderDown;
@@ -59,7 +59,7 @@ public class Cliente {
     }
 
     private void executar() {
-        File file = null;
+        File file;
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("Usuario: ");
         try {
@@ -98,6 +98,7 @@ public class Cliente {
         System.out.println("Conectado com sucesso");
         String str = "";
         String[] comando;
+        user = new Usuario(this.usuario, folderUp, folderDown, callback);
         
         do {
             System.out.print(this.usuario+": ");
@@ -111,7 +112,7 @@ public class Cliente {
             switch (comando[0]) {
                 case "down":
                     //faz download de um arquivo
-                    System.out.println("ls");
+                    System.out.println();
                     break;
                 case "ls":
                     //mostra todos os arquivos
