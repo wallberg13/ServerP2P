@@ -43,7 +43,7 @@ public class Cliente {
     private final String ip;
     private final Integer porta;
     
-    private Usuario user;
+//    private Usuario user;
     private String usuario;
     private String folderUp;
     private String folderDown;
@@ -81,11 +81,34 @@ public class Cliente {
             System.err.println("Digitação incorreta");                     
         }
         try {
-            user = new Usuario(usuario, folderUp, new CallbackImpl());
+//            user = new Usuario(usuario, folderUp, new CallbackImpl());
             Registry reg = LocateRegistry.getRegistry(this.ip, this.porta);
         } catch (RemoteException ex) {
             System.err.println("Erro Remoto: " + ex.getMessage());     
         }
+        System.out.println("Conectado com sucesso");
+        String str = "";
+        String[] comando;
+        
+        do {
+            System.out.print(this.usuario+": ");
+            try {
+                str = in.readLine();
+            } catch (IOException ex) {
+                System.err.println("Digitação incorreta");
+            }
+            comando = str.split(" ");
+            
+            if(comando[0].equals("down")) {//faz download de um arquivo
+                System.out.println("ls");
+            } else if(comando[0].equals("ls")) { //mostra todos os arquivos
+                System.out.println("ls");
+            } else {
+                System.out.println(comando[0] + "not found");
+            }
+            
+        } while(!comando[0].equals("exit"));
+        
     }
     
 }

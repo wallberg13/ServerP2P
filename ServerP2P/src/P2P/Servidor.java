@@ -23,16 +23,18 @@ SOFTWARE.
  */
 package P2P;
 
+import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author jefferson
  */
 public class Servidor {
-    IArquivo arquivoscompartilhados;
     Registry registro;
     public Servidor(Integer porta) {
         try {
@@ -51,9 +53,7 @@ public class Servidor {
     }
 
     private void hostear() {
-        try {
-        } catch (Exception e) {
-        }
+        
     }
 }
 
