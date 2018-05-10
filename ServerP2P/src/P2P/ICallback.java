@@ -24,22 +24,47 @@ SOFTWARE.
 package P2P;
 
 import java.rmi.*;
+import java.util.ArrayList;
 
 /**
  *
  * @author sir-berg
  */
 public interface ICallback extends Remote {
-    public void loginUser(String nome, String dirUp, String dirDown) throws RemoteException;
-    public void logoutUser(String nome) throws RemoteException;
     
     /** 
-     * Método que tem como função
+     * Método invocado pelo servidor para quando tiver um novo
+     * cliente disponivel, os demais clientes serem informados.
+     * 
+     * Será passado como parametro um Usuario, neste usuario tem como informações
+     * o seu nome, a pasta dos arquivos disponveis e a pasta que os arquivos serão salvos.
+     * @param files 
+     */
+    public void addFilesAvailable(Usuario user);
+    
+    /**
+     * Método invocado pelo servidor para quando um cliente fechar a sua aplicação, 
+     * os demais clientes serem informados.
+     * @param files 
+     */
+    public void rmFilesAvailable(Usuario user);
+    
+    /** 
+     * Método que tem como função mandar um arquivo para outro usuario pela rede.
      * 
      * @param nome
      * @param file
      * @throws java.rmi.RemoteException
      */
     public void uploadFile(String nome, String file)throws RemoteException;
+    
+    /** 
+     * Método que tem como função solicitar de outro usuario um arquivo que deseja 
+     * guardar na sua máquina.
+     * 
+     * @param nome
+     * @param file
+     * @throws java.rmi.RemoteException
+     */
     public void downloadFile(String nome, String file)throws RemoteException;
 }
