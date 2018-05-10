@@ -24,11 +24,17 @@ SOFTWARE.
 package P2P;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 /**
  *
  * @author sir-berg
  */
 public interface iNapster extends Remote {
+    
+    public ArrayList<Usuario> login() throws RemoteException;
+    
+    public void logout() throws RemoteException;
     
 }

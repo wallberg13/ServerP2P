@@ -23,12 +23,24 @@ SOFTWARE.
  */
 package P2P;
 
+import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 
 /**
  *
  * @author sir-berg
  */
-public class Napster extends UnicastRemoteObject implements iNapster{
+public class Napster extends UnicastRemoteObject implements iNapster {
+
+    @Override
+    public ArrayList<Usuario> login() throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void logout() throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
