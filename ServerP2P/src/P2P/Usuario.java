@@ -24,6 +24,7 @@ SOFTWARE.
 package P2P;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  *
@@ -34,13 +35,14 @@ public class Usuario implements Serializable{
     private final String dirUp;
     private final String dirDown;
     private final ICallback callback;
-    //private ArrayList<Arquivos> arquivos;
+    private ArrayList files;
 
     public Usuario(String nome, String dirUp, String dirDown, ICallback callback) {
         this.nome = nome;
         this.dirUp = dirUp;
         this.dirDown = dirDown;
         this.callback = callback;
+        this.files = new ArrayList();
     }
 
     public String getNome() {
@@ -59,5 +61,7 @@ public class Usuario implements Serializable{
         return callback;
     }
     
-    
+    public ArrayList getFiles() {
+        return files;
+    }
 }
