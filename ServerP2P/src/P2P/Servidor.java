@@ -23,37 +23,32 @@ SOFTWARE.
  */
 package P2P;
 
-import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.*;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author jefferson
  */
 public class Servidor {
-    Registry registro;
+    
     public Servidor(Integer porta) {
         try {
+            Napster nap = new Napster();
+            // Caso tiver um servidor de registros
+            // Registry registro = LocateRegistry.getRegistry("127.0.0.1", 1099)
             //Criando servidor de registros;
-            registro = LocateRegistry.createRegistry(porta);
+            Registry registro = LocateRegistry.createRegistry(porta);
+            registro.rebind("Nap", nap);
+            
             System.out.println("Servidor de registros criado");
         } catch (RemoteException e) {
             System.err.println("Erro na conexão: " + e.getMessage());
         }
     }
-     
-
+ 
     public static void main(String[] args) {
-        Servidor s = new Servidor(1024);
-        s.hostear();
-    }
-
-    private void hostear() {
-        
+        Servidor s = new Servidor(4321);
     }
 }
 

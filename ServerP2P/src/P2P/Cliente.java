@@ -98,7 +98,7 @@ public class Cliente {
         System.out.println("Conectado com sucesso");
         String str = "";
         String[] comando;
-        user = new Usuario(this.usuario, folderUp, folderDown, new Callback());
+        //user = new Usuario(this.usuario, folderUp, folderDown, new Callback());
         
         do {
             System.out.print(this.usuario+": ");

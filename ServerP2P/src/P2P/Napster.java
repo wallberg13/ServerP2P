@@ -32,7 +32,13 @@ import java.util.ArrayList;
  * @author sir-berg
  */
 public class Napster extends UnicastRemoteObject implements iNapster {
-
+    
+    private ArrayList <Usuario> usersConectados;
+    
+    public Napster() throws RemoteException{
+        super();
+    }
+    
     @Override
     public ArrayList<Usuario> login() throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
