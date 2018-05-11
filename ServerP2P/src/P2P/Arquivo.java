@@ -46,7 +46,4 @@ public class Arquivo implements Serializable {
     public long getSize() {
         return size;
     }
-    
-    
-    
 }

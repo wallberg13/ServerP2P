@@ -25,6 +25,7 @@ package P2P;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 
 /**
  *
@@ -40,23 +41,43 @@ public class Callback extends UnicastRemoteObject implements ICallback{
     }
     
     @Override
-    public void addFilesAvailable(Usuario user) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void addUserAvailable(Usuario user) throws RemoteException {
+        cli.getUsers().add(user);
     }
 
     @Override
-    public void rmFilesAvailable(Usuario user) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void rmUserAvailable(Usuario user) throws RemoteException {
+        Usuario rem = null;
+        for(Usuario us: cli.getUsers()){
+            if(us.equals(user)){
+                rem = us;
+                break;
+            }
+        }
+        if(rem != null){
+            System.out.println(rem.getNome() + " saiu!!");
+            cli.getUsers().remove(rem);
+        }else{
+            System.out.println("Usuario não encontrado!!");
+        }
     }
-
+    
+    /**
+     * Deixa em branco por enquanto
+     * @param file
+     * @throws RemoteException 
+     */
     @Override
-    public void uploadFile(String nome, String file) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void uploadFile(String file) throws RemoteException {
+        
     }
-
+    
+    /** 
+     * Deixa em branco por enquanto
+     */
     @Override
     public void downloadFile(String nome, String file) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
     
 }

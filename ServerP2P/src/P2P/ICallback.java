@@ -38,25 +38,25 @@ public interface ICallback extends Remote {
      * 
      * Será passado como parametro um Usuario, neste usuario tem como informações
      * o seu nome, a pasta dos arquivos disponveis e a pasta que os arquivos serão salvos.
-     * @param files 
+     * @param user
+     * @throws java.rmi.RemoteException 
      */
-    public void addFilesAvailable(Usuario user) throws RemoteException;
+    public void addUserAvailable(Usuario user) throws RemoteException;
     
     /**
      * Método invocado pelo servidor para quando um cliente fechar a sua aplicação, 
      * os demais clientes serem informados.
-     * @param files 
+     * @param user
+     * @throws java.rmi.RemoteException
      */
-    public void rmFilesAvailable(Usuario user) throws RemoteException;
+    public void rmUserAvailable(Usuario user) throws RemoteException;
     
     /** 
      * Método que tem como função mandar um arquivo para outro usuario pela rede.
-     * 
-     * @param nome
      * @param file
      * @throws java.rmi.RemoteException
      */
-    public void uploadFile(String nome, String file) throws RemoteException;
+    public void uploadFile(String file) throws RemoteException;
     
     /** 
      * Método que tem como função solicitar de outro usuario um arquivo que deseja 

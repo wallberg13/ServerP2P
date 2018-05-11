@@ -35,7 +35,7 @@ public class Usuario implements Serializable{
     private final String dirUp;
     private final String dirDown;
     private final ICallback callback;
-    private ArrayList<Arquivo> files;
+    private ArrayList <Arquivo> files;
 
     public Usuario(String nome, String dirUp, String dirDown, ICallback callback, ArrayList<Arquivo> files) {
         this.nome = nome;
@@ -61,11 +61,18 @@ public class Usuario implements Serializable{
         return callback;
     }
     
-    public ArrayList<Arquivo> getFiles() {
+    public ArrayList <Arquivo> getFiles() {
         return files;
     }
     
-    public void setFiles (ArrayList<Arquivo> files) {
+    public void getFiles (ArrayList<Arquivo> files) {
         this.files = files;
+    }
+    
+    public void printFiles(){
+        System.out.println("Arquivos disponiveis com: " + nome);
+        for(Arquivo aux: files){
+            System.out.println("\t" + aux.getNome() + " Tamanho: " + aux.getSize() + " bytes");
+        }
     }
 }

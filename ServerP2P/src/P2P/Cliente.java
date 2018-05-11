@@ -49,10 +49,14 @@ public class Cliente {
     
     private iNapster servidor;
     private ArrayList <Usuario> users;
-    private ArrayList<Arquivo> files;
+    private ArrayList <Arquivo> files; //Não é aqui
     
     private final String ip;
     private final Integer porta;
+
+    public ArrayList<Usuario> getUsers() {
+        return users;
+    }
     
     private Usuario user;
     private String usuario;
