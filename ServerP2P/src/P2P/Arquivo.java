@@ -23,10 +23,30 @@ SOFTWARE.
  */
 package P2P;
 
+import java.io.Serializable;
+
 /**
  *
- * @author sir-berg
+ * @author jefferson
  */
-public interface IUsuario {
+public class Arquivo implements Serializable {
+    
+    private final String nome;
+    private final long size;
+
+    public Arquivo(String nome, long size) {
+        this.nome = nome;
+        this.size = size;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public long getSize() {
+        return size;
+    }
+    
+    
     
 }

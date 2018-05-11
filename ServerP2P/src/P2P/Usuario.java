@@ -35,9 +35,9 @@ public class Usuario implements Serializable{
     private final String dirUp;
     private final String dirDown;
     private final ICallback callback;
-    private ArrayList files;
+    private ArrayList<Arquivo> files;
 
-    public Usuario(String nome, String dirUp, String dirDown, ICallback callback) {
+    public Usuario(String nome, String dirUp, String dirDown, ICallback callback, ArrayList<Arquivo> files) {
         this.nome = nome;
         this.dirUp = dirUp;
         this.dirDown = dirDown;
@@ -61,7 +61,11 @@ public class Usuario implements Serializable{
         return callback;
     }
     
-    public ArrayList getFiles() {
+    public ArrayList<Arquivo> getFiles() {
         return files;
+    }
+    
+    public void setFiles (ArrayList<Arquivo> files) {
+        this.files = files;
     }
 }

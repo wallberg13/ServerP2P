@@ -32,6 +32,8 @@ import java.rmi.registry.LocateRegistry;
 import java.io.File;
 import java.rmi.NotBoundException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * O Cliente deve possuir:
@@ -47,6 +49,7 @@ public class Cliente {
     
     private iNapster servidor;
     private ArrayList <Usuario> users;
+    private ArrayList<Arquivo> files;
     
     private final String ip;
     private final Integer porta;
@@ -62,9 +65,9 @@ public class Cliente {
         this.porta = porta;
         
         try{
-            Registry registry = LocateRegistry.getRegistry("localhost");
+            Registry registry = LocateRegistry.getRegistry(ip, porta);
             servidor = (Napster) registry.lookup("Nap");
-            users = new ArrayList<Usuario>();
+            users = new ArrayList<>();
             
         } catch (NotBoundException | RemoteException ex) {
             System.err.println(ex);
@@ -101,8 +104,9 @@ public class Cliente {
             File[] x = file.listFiles();
             Integer i = 0;
             for(File y : x) {
-                if(y.isFile())
-                    arquivosUp[i++] = y.getName();
+                if(y.isFile()) {
+                    files.add(new Arquivo(y.getName(), y.length()));
+                }
             }
             
         } catch (IOException ex) {
@@ -115,16 +119,15 @@ public class Cliente {
         } catch (IOException ex) {
             System.err.println("Digitação incorreta");                     
         }
-        try {
-//            user = new Usuario(usuario, folderUp, new CallbackImpl());
-            Registry reg = LocateRegistry.getRegistry(this.ip, this.porta);
-        } catch (RemoteException ex) {
-            System.err.println("Erro Remoto: " + ex.getMessage());     
-        }
+        
         System.out.println("Conectado com sucesso");
         String str = "";
         String[] comando;
-        //user = new Usuario(this.usuario, folderUp, folderDown, new Callback());
+        try {
+            user = new Usuario(this.usuario, folderUp, folderDown,new Callback(this), files);
+        } catch (RemoteException ex) {
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         do {
             System.out.print(this.usuario+": ");
