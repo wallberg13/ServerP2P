@@ -39,8 +39,7 @@ public class Servidor {
             // Registry registro = LocateRegistry.getRegistry("127.0.0.1", 1099)
             //Criando servidor de registros;
             Registry registro = LocateRegistry.createRegistry(porta);
-            registro.rebind("Nap", nap);
-            
+            registro.rebind("MeuNap", nap);
             System.out.println("Servidor de registros criado");
         } catch (RemoteException e) {
             System.err.println("Erro na conexão: " + e.getMessage());
@@ -50,6 +49,7 @@ public class Servidor {
     public static void main(String[] args) {
         Servidor s = new Servidor(4321);
     }
+    
 }
 
 

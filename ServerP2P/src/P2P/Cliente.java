@@ -23,15 +23,13 @@ SOFTWARE.
  */
 package P2P;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.rmi.RemoteException;
 import java.rmi.registry.*;
 import java.rmi.registry.LocateRegistry;
 import java.io.File;
 import java.rmi.NotBoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * O Cliente deve possuir:
@@ -51,7 +49,6 @@ public class Cliente {
      * Objeto Servidor do tipo Interface Napster
      * E a lista de usuarios disponiveis.
      */
-    
     private iNapster servidor;
     private ArrayList <Usuario> users;
     
@@ -84,26 +81,33 @@ public class Cliente {
      */
     private ArrayList <String> log; 
     
+    /**
+     * Scanner para o teclado
+     */
+    Scanner teclado;
+    
     public Cliente(String ip, Integer porta) {
         this.ip = ip;
         this.porta = porta;
+        this.teclado = new Scanner(System.in);
         
         try{
             Registry registry = LocateRegistry.getRegistry(ip, porta);
-            servidor = (Napster) registry.lookup("Nap");
+            servidor = (iNapster) registry.lookup("MeuNap");
             users = new ArrayList<>();
             
         } catch (NotBoundException | RemoteException ex) {
             System.err.println(ex);
         }
+        
+        executar();
     }
     
     public static void main(String[] args) {
-        Cliente c = new Cliente("192.168.0.1", 1024);
-        c.executar();
+        Cliente c = new Cliente("127.0.0.1", 4321);
     }
 
-    private int menu(){
+    private Boolean menu(){
         int resp;
         System.out.println("--- Informações do Cliente ---");
         System.out.println("User: " + user.getNome());
@@ -114,9 +118,28 @@ public class Cliente {
         System.out.println("2 - Listar arquivos disponiveis");
         System.out.println("3 - Imprimir Log");
         System.out.println("0 - Sair");
-        System.out.println("Digite: ");
+        System.out.println("Digite: "); resp = teclado.nextInt();
         
-        return 1;
+        switch(resp){
+            case 1:
+                download();
+                break;
+            case 2:
+                
+                break;
+            case 3:
+                
+                break;
+            case 0:
+                return false;
+            
+            default:
+                System.out.println("Opção não disponivel!!");
+                break;
+        }
+        
+        
+        return true;
     }
     
     /**
@@ -128,76 +151,43 @@ public class Cliente {
      */   
     private void executar() {
         File file;
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        System.out.print("Usuario: ");
-        try {
-            usuario = in.readLine();
-        } catch (IOException ex) {
-            System.err.println("Digitação incorreta");
-        }
+        /**
+         * Dá pra criar o objeto usuario, e dentro do construtor do usuario, 
+         * ele cuida de pegar todos os arquivos
+         */
+        System.out.print("Usuario: "); usuario = teclado.nextLine();        
+        System.out.print("Caminho da pasta compartilhada: "); folderUp = teclado.nextLine();
+        System.out.print("Caminho para salvar downloads: "); folderDown = teclado.nextLine();
         
-        System.out.print("Caminho da pasta compartilhada: ");
-        try {
-            folderUp = in.readLine();
-            file = new File(folderUp);
-            File[] x = file.listFiles();
-            Integer i = 0;
-            for(File y : x) {
-                if(y.isFile()) {
-    //                files.add(new Arquivo(y.getName(), y.length()));
-                }
-            }
-            
-        } catch (IOException ex) {
-            System.err.println("Digitação incorreta");                     
+        try{
+            user = new Usuario(usuario, folderUp, folderDown, new Callback(this));
+        } catch (RemoteException ex){
+            System.err.println(ex);
         }
-        
-        System.out.print("Caminho para salvar downloads: ");
-        try {
-            folderDown = in.readLine();
-        } catch (IOException ex) {
-            System.err.println("Digitação incorreta");                     
-        }
-        
         System.out.println("Conectado com sucesso");
-        String str = "";
-        String[] comando;
-//        try {
-//            user = new Usuario(this.usuario, folderUp, folderDown,new Callback(this), files);
-//        } catch (RemoteException ex) {
-//            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
-//       }
         
-        do {
-            System.out.print(this.usuario+": ");
-            try {
-                str = in.readLine();
-            } catch (IOException ex) {
-                System.err.println("Digitação incorreta");
-            }
-            comando = str.split(" ");
-            
-            switch (comando[0]) {
-                case "down":
-                    //faz download de um arquivo
-                    System.out.println();
-                    break;
-                case "ls":
-                    //mostra todos os arquivos
-                    System.out.println();
-                    break;
-                default:
-                    System.out.println(comando[0] + "not found");
-                    break;
-            }
-            
-        } while(!comando[0].equals("exit"));
-        
+        while(menu()); //Fica executando o menu infinitamente - Ate o usuario nao quiser              
     }   
     
-    /**
-     * Gets e Sets
+    // Funções do menu
+    
+    /** 
+     * Função que tem como objetivo listar todos os arquivos disponiveis
      */
+    public void printFiles(){
+        System.out.println("--- Lista de Arquivos ---");
+        for(Usuario x: users){
+            x.printFiles();
+        }
+    }
+    
+    /**
+     * Função que tem como objetivo pedir o nome do arquivo para download, e fazer download do mesmo.
+     * --- Aqui vai ter magia
+     */
+    public void download(){
+        
+    }
     
     public ArrayList<Usuario> getUsers() {
         return users;

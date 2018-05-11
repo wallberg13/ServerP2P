@@ -37,7 +37,7 @@ public class Usuario implements Serializable{
     private final ICallback callback;
     private ArrayList <Arquivo> files;
 
-    public Usuario(String nome, String dirUp, String dirDown, ICallback callback, ArrayList<Arquivo> files) {
+    public Usuario(String nome, String dirUp, String dirDown, ICallback callback) {
         this.nome = nome;
         this.dirUp = dirUp;
         this.dirDown = dirDown;
