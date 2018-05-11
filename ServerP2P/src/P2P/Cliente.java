@@ -32,8 +32,6 @@ import java.rmi.registry.LocateRegistry;
 import java.io.File;
 import java.rmi.NotBoundException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * O Cliente deve possuir:
@@ -42,27 +40,49 @@ import java.util.logging.Logger;
  *  - Tem uma lista de Usuarios que estão presentes, e cada usuario tem a sua lista de arquivos.
  *  - Então de inicio, desta aplicação, é solicitado um lugar para Download e outro para Upload.
  * 
+ *  - Tem um proprio objeto do Cliente, que é usuario, então quando
+ *    For adicionar um arquivo, já é adicionado o arquivo dentro do objeto usuario.
  * 
  * @author jefferson
  */
 public class Cliente {
     
+    /**
+     * Objeto Servidor do tipo Interface Napster
+     * E a lista de usuarios disponiveis.
+     */
+    
     private iNapster servidor;
     private ArrayList <Usuario> users;
-    private ArrayList <Arquivo> files; //Não é aqui
     
+    /** 
+     * Localização do objeto servidor
+     */
     private final String ip;
     private final Integer porta;
 
-    public ArrayList<Usuario> getUsers() {
-        return users;
-    }
-    
+    /**
+     * Usuario Local
+     */
     private Usuario user;
+    
+    /** 
+     * Dados utilizados somente para leitura
+     */
     private String usuario;
     private String folderUp;
     private String folderDown;
     private String[] arquivosUp;
+    
+    /**
+     * Variavel de log, toda vez que um usuario sair ou entrar, será
+     * adicionado uma linha neste log.
+     * Serve para não aparecer mensagens em lugares não convenientes (como por
+     * exemplo, o usuario sair enquanto o outro está a escolher o que quer no menu).
+     * Então o log sempre irá aparecer dps que o usuario selecionar alguma opcao do menu, ou
+     * quando selecionar a opção de atualizar log que estara disponivel no menu.
+     */
+    private ArrayList <String> log; 
     
     public Cliente(String ip, Integer porta) {
         this.ip = ip;
@@ -83,13 +103,28 @@ public class Cliente {
         c.executar();
     }
 
-    private void menu(){
+    private int menu(){
+        int resp;
+        System.out.println("--- Informações do Cliente ---");
+        System.out.println("User: " + user.getNome());
+        System.out.println("Pasta Upload: " + user.getDirUp());
+        System.out.println("Pasta Download: " + user.getDirDown());
+        System.out.println("--- Menu Usuario ---");
+        System.out.println("1 - Fazer download"); // Puxa o menu download e nele já lista os arquivos disponiveis
+        System.out.println("2 - Listar arquivos disponiveis");
+        System.out.println("3 - Imprimir Log");
+        System.out.println("0 - Sair");
+        System.out.println("Digite: ");
         
+        return 1;
     }
     
     /**
      * Método que tem como função definir uma interface com o usuario, 
      * ele irá definir quem 
+     * 1 - Pega nome do usuario, e cria o seu proprio usuario.
+     * 2 - Depois completa as informações (FolderUp, FolderDown)
+     * 3 - Depois de pegar o FolderDown, então que é feito uma interação na lista
      */   
     private void executar() {
         File file;
@@ -109,7 +144,7 @@ public class Cliente {
             Integer i = 0;
             for(File y : x) {
                 if(y.isFile()) {
-                    files.add(new Arquivo(y.getName(), y.length()));
+    //                files.add(new Arquivo(y.getName(), y.length()));
                 }
             }
             
@@ -127,11 +162,11 @@ public class Cliente {
         System.out.println("Conectado com sucesso");
         String str = "";
         String[] comando;
-        try {
-            user = new Usuario(this.usuario, folderUp, folderDown,new Callback(this), files);
-        } catch (RemoteException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            user = new Usuario(this.usuario, folderUp, folderDown,new Callback(this), files);
+//        } catch (RemoteException ex) {
+//            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+//       }
         
         do {
             System.out.print(this.usuario+": ");
@@ -159,4 +194,12 @@ public class Cliente {
         } while(!comando[0].equals("exit"));
         
     }   
+    
+    /**
+     * Gets e Sets
+     */
+    
+    public ArrayList<Usuario> getUsers() {
+        return users;
+    }
 }
