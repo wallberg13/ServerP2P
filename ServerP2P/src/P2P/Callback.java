@@ -32,8 +32,11 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public class Callback extends UnicastRemoteObject implements ICallback{
     
-    public Callback() throws RemoteException{
+    Cliente cli;
+    
+    public Callback(Cliente cli) throws RemoteException{
         super();
+        this.cli = cli;
     }
     
     @Override

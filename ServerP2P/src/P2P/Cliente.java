@@ -30,14 +30,23 @@ import java.rmi.RemoteException;
 import java.rmi.registry.*;
 import java.rmi.registry.LocateRegistry;
 import java.io.File;
+import java.rmi.NotBoundException;
+import java.util.ArrayList;
 
 /**
- *
+ * O Cliente deve possuir:
+ *  - Todas as pessoas que estão conectadas sempre sendo informado pelo servidor
+ *  - Interface para o Usuario: Menu usuario.
+ *  - Tem uma lista de Usuarios que estão presentes, e cada usuario tem a sua lista de arquivos.
+ *  - Então de inicio, desta aplicação, é solicitado um lugar para Download e outro para Upload.
+ * 
+ * 
  * @author jefferson
  */
 public class Cliente {
-
-
+    
+    private iNapster servidor;
+    private ArrayList <Usuario> users;
     
     private final String ip;
     private final Integer porta;
@@ -51,6 +60,15 @@ public class Cliente {
     public Cliente(String ip, Integer porta) {
         this.ip = ip;
         this.porta = porta;
+        
+        try{
+            Registry registry = LocateRegistry.getRegistry("localhost");
+            servidor = (Napster) registry.lookup("Nap");
+            users = new ArrayList<Usuario>();
+            
+        } catch (NotBoundException | RemoteException ex) {
+            System.err.println(ex);
+        }
     }
     
     public static void main(String[] args) {
@@ -58,6 +76,14 @@ public class Cliente {
         c.executar();
     }
 
+    private void menu(){
+        
+    }
+    
+    /**
+     * Método que tem como função definir uma interface com o usuario, 
+     * ele irá definir quem 
+     */   
     private void executar() {
         File file;
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -125,6 +151,5 @@ public class Cliente {
             
         } while(!comando[0].equals("exit"));
         
-    }
-    
+    }   
 }
