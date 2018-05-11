@@ -99,15 +99,14 @@ public class Cliente {
         } catch (NotBoundException | RemoteException ex) {
             System.err.println(ex);
         }
-        
-        executar();
     }
     
     public static void main(String[] args) {
         Cliente c = new Cliente("127.0.0.1", 4321);
+        c.executar();
     }
 
-    private Boolean menu(){
+    private int menu(){
         int resp;
         System.out.println("--- Informações do Cliente ---");
         System.out.println("User: " + user.getNome());
@@ -118,7 +117,7 @@ public class Cliente {
         System.out.println("2 - Listar arquivos disponiveis");
         System.out.println("3 - Imprimir Log");
         System.out.println("0 - Sair");
-        System.out.println("Digite: "); resp = teclado.nextInt();
+        System.out.print("Digite: "); resp = teclado.nextInt();
         
         switch(resp){
             case 1:
@@ -131,15 +130,14 @@ public class Cliente {
                 
                 break;
             case 0:
-                return false;
-            
+                System.out.println("Aplicação Finalizada");
+                break;  
             default:
                 System.out.println("Opção não disponivel!!");
                 break;
         }
         
-        
-        return true;
+        return resp;
     }
     
     /**
@@ -154,7 +152,7 @@ public class Cliente {
         /**
          * Dá pra criar o objeto usuario, e dentro do construtor do usuario, 
          * ele cuida de pegar todos os arquivos
-         */
+         */     
         System.out.print("Usuario: "); usuario = teclado.nextLine();        
         System.out.print("Caminho da pasta compartilhada: "); folderUp = teclado.nextLine();
         System.out.print("Caminho para salvar downloads: "); folderDown = teclado.nextLine();
@@ -165,8 +163,13 @@ public class Cliente {
             System.err.println(ex);
         }
         System.out.println("Conectado com sucesso");
-        
-        while(menu()); //Fica executando o menu infinitamente - Ate o usuario nao quiser              
+        //Fica executando o menu infinitamente - Ate o usuario nao quiser              
+        int cond = 1;
+        while(cond > 0){
+            System.out.println(cond);
+            cond = menu();
+        }; 
+        System.out.println("Finalizado");
     }   
     
     // Funções do menu
