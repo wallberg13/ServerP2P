@@ -42,6 +42,7 @@ public class Callback extends UnicastRemoteObject implements ICallback{
     @Override
     public void addUserAvailable(Usuario user) throws RemoteException {
         cli.getUsers().add(user);
+        cli.getLog().add("Usuario " + user.getNome() + " entrou.");
     }
 
     @Override
@@ -56,6 +57,7 @@ public class Callback extends UnicastRemoteObject implements ICallback{
         if(rem != null){
             System.out.println(rem.getNome() + " saiu!!");
             cli.getUsers().remove(rem);
+            cli.getLog().add("Usuario " + rem.getNome() + " saiu");
         }else{
             System.out.println("Usuario não encontrado!!");
         }

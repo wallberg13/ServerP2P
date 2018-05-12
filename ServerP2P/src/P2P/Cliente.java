@@ -106,7 +106,7 @@ public class Cliente {
         c.executar();
     }
 
-    private int menu(){
+    private Boolean menu(){
         int resp;
         System.out.println("--- Informações do Cliente ---");
         System.out.println("User: " + user.getNome());
@@ -120,24 +120,24 @@ public class Cliente {
         System.out.print("Digite: "); resp = teclado.nextInt();
         
         switch(resp){
+            case 0:
+                System.out.println("Aplicação Finalizada");
+                return false;
             case 1:
                 download();
                 break;
             case 2:
-                
+                printFiles();
                 break;
             case 3:
-                
+                printLog();
                 break;
-            case 0:
-                System.out.println("Aplicação Finalizada");
-                break;  
             default:
                 System.out.println("Opção não disponivel!!");
                 break;
         }
         
-        return resp;
+        return true;
     }
     
     /**
@@ -164,12 +164,18 @@ public class Cliente {
         }
         System.out.println("Conectado com sucesso");
         //Fica executando o menu infinitamente - Ate o usuario nao quiser              
-        int cond = 1;
-        while(cond > 0){
-            System.out.println(cond);
-            cond = menu();
-        }; 
-        System.out.println("Finalizado");
+        
+        //Essa parte do codigo poderia ser em uma linha
+        
+        while(menu());
+        
+        try{
+            servidor.logout();
+        } catch(RemoteException ex){
+            System.err.println(ex.getMessage());
+        }
+        
+                
     }   
     
     // Funções do menu
@@ -190,6 +196,16 @@ public class Cliente {
      */
     public void download(){
         
+    }
+    
+    public void printLog(){
+        for(String aux: log){
+            System.out.println(aux);
+        }
+    }
+
+    public ArrayList<String> getLog(){
+        return log;
     }
     
     public ArrayList<Usuario> getUsers() {
