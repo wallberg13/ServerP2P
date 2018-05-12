@@ -35,18 +35,26 @@ public class Napster extends UnicastRemoteObject implements iNapster {
     
     private ArrayList <Usuario> usersConectados;
     
-    public Napster() throws RemoteException{
+    public Napster() throws RemoteException{        
         super();
+        usersConectados = new ArrayList<>();
     }
     
     @Override
-    public ArrayList<Usuario> login() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<Usuario> login(Usuario e) throws RemoteException {
+        usersConectados.add(e);
+        return usersConectados;
     }
 
     @Override
     public void logout() throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public ArrayList<Usuario> getUsers() throws RemoteException {
+        return usersConectados;
+    }
+    
     
 }

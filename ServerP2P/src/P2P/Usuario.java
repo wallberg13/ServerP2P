@@ -65,7 +65,7 @@ public class Usuario implements Serializable{
         return files;
     }
     
-    public void getFiles (ArrayList<Arquivo> files) {
+    public void setFiles (ArrayList<Arquivo> files) {
         this.files = files;
     }
     

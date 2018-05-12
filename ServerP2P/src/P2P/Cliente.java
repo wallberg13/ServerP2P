@@ -159,6 +159,9 @@ public class Cliente {
         
         try{
             user = new Usuario(usuario, folderUp, folderDown, new Callback(this));
+            user.setFiles(addFiles(new File(folderUp).listFiles()));
+            users = servidor.login(user);
+            
         } catch (RemoteException ex){
             System.err.println(ex);
         }
@@ -185,6 +188,11 @@ public class Cliente {
      */
     public void printFiles(){
         System.out.println("--- Lista de Arquivos ---");
+        try {
+            users = servidor.getUsers();
+        } catch (RemoteException ex) {
+            System.err.println(ex.getMessage());
+        }
         for(Usuario x: users){
             x.printFiles();
         }
@@ -210,5 +218,14 @@ public class Cliente {
     
     public ArrayList<Usuario> getUsers() {
         return users;
+    }
+    
+    private ArrayList<Arquivo> addFiles(File[] files) {
+        ArrayList<Arquivo> x = new ArrayList<>();
+        for(File y : files) 
+            if(y.isFile()) x.add(new Arquivo(y.getName(), y.length()));
+        
+        
+        return x;
     }
 }

@@ -33,8 +33,10 @@ import java.util.ArrayList;
  */
 public interface iNapster extends Remote {
     
-    public ArrayList<Usuario> login() throws RemoteException;
+    public ArrayList<Usuario> login(Usuario e) throws RemoteException;
     
     public void logout() throws RemoteException;
+    
+    public ArrayList<Usuario> getUsers() throws RemoteException;
     
 }
