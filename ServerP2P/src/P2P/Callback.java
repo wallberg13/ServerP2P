@@ -55,7 +55,6 @@ public class Callback extends UnicastRemoteObject implements ICallback{
             }
         }
         if(rem != null){
-            System.out.println(rem.getNome() + " saiu!!");
             cli.getUsers().remove(rem);
             cli.getLog().add("Usuario " + rem.getNome() + " saiu");
         }else{
