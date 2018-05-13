@@ -173,7 +173,7 @@ public class Cliente {
         while(menu());
         
         try{
-            servidor.logout();
+            servidor.logout(user);
         } catch(RemoteException ex){
             System.err.println(ex.getMessage());
         }

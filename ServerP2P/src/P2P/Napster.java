@@ -42,13 +42,29 @@ public class Napster extends UnicastRemoteObject implements iNapster {
     
     @Override
     public ArrayList<Usuario> login(Usuario e) throws RemoteException {
+        
+        for(Usuario aux: usersConectados){
+            aux.getCallback().addUserAvailable(e);
+        }
+        
         usersConectados.add(e);
+        System.out.println("Usuario " + e.getNome() + " entrou");
         return usersConectados;
     }
 
     @Override
-    public void logout() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void logout(Usuario e) throws RemoteException {
+        Usuario rem = null;
+        
+        for(Usuario aux: usersConectados){
+            if(!aux.equals(e)){
+                aux.getCallback().rmUserAvailable(e);
+            }else{
+                rem = aux;
+            }
+        }
+        System.out.println("Usuario " + rem.getNome() + " não está mais disponivel!");
+        usersConectados.remove(rem);
     }
 
     @Override
