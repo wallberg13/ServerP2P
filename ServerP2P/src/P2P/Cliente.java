@@ -109,7 +109,7 @@ public class Cliente {
     }
     
     public static void main(String[] args) {
-        Cliente c = new Cliente("127.0.0.1", 4321);
+        Cliente c = new Cliente("172.20.221.104", 4321);
         c.executar();
     }
 
@@ -233,20 +233,25 @@ public class Cliente {
         } catch(RemoteException e) {
             System.err.print(e.getMessage());
         }
-        // Salvando o Arquivo
-        File save = new File(user.getDirDown()+"/"+arquivo);
-        try{
-            FileOutputStream out = new FileOutputStream(save);
-            out.write(file);
-            out.close();
-            System.out.println("--- Download completo ---");
-        } catch(FileNotFoundException ex){
+        if(file != null){
+            // Salvando o Arquivo
+            File save = new File(user.getDirDown()+"/"+arquivo);
+            try{
+                FileOutputStream out = new FileOutputStream(save);
+                out.write(file);
+                out.close();
+                System.out.println("--- Download completo ---");
+            } catch(FileNotFoundException ex){
+                System.out.println("--- Arquivo não encontrado ---");
+            } catch (IOException ex) {
+                System.out.println("--- Deu Pau!! ---");
+            } catch (NullPointerException ex){
+                System.out.println("--- Arquivo não existe ---");
+            }
+        }else{
             System.out.println("--- Arquivo não encontrado ---");
-        } catch (IOException ex) {
-            System.out.println("--- Deu Pau!! ---");
-        } catch (NullPointerException ex){
-            System.out.println("--- Arquivo não existe ---");
         }
+        
     }
     
     /**
