@@ -90,6 +90,7 @@ public class Cliente {
         this.ip = ip;
         this.porta = porta;
         this.teclado = new Scanner(System.in);
+        this.log = new ArrayList<>();
         
         try{
             Registry registry = LocateRegistry.getRegistry(ip, porta);
