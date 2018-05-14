@@ -203,8 +203,19 @@ public class Cliente {
      * Função que tem como objetivo pedir o nome do arquivo para download, e fazer download do mesmo.
      * --- Aqui vai ter magia
      */
-    public void download(){
-        
+    public void download(String File){
+        //achar de quem é o arquivo e chamar o callback deste usuário
+        try {
+            for(Usuario u : users) {
+                for( Arquivo a : u.getFiles()) {
+                    if (a.getNome().contains(File)) {
+                        u.getCallback().downloadFile(u.getNome(), a.getNome());
+                    }
+                }
+            }
+        } catch(RemoteException e) {
+            System.err.print(e.getMessage());
+        }
     }
     
     public void printLog(){

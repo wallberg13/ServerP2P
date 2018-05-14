@@ -23,6 +23,10 @@ SOFTWARE.
  */
 package P2P;
 
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -74,10 +78,20 @@ public class Callback extends UnicastRemoteObject implements ICallback{
     
     /** 
      * Deixa em branco por enquanto
+     * @param u
+     * @return 
      */
     @Override
-    public void downloadFile(String nome, String file) throws RemoteException {
-        
+    public byte[] downloadFile(Usuario u, String file) throws RemoteException {
+        try {
+            byte[] ret;
+            Path files = FileSystems.getDefault().getPath(u.getDirUp(), file);
+            ret = Files.readAllBytes(files);
+            return ret;
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+        return null;
     }
     
 }

@@ -62,9 +62,9 @@ public interface ICallback extends Remote {
      * Método que tem como função solicitar de outro usuario um arquivo que deseja 
      * guardar na sua máquina.
      * 
-     * @param nome
+     * @param u
      * @param file
      * @throws java.rmi.RemoteException
      */
-    public void downloadFile(String nome, String file) throws RemoteException;
+    public byte[] downloadFile(Usuario u, String file) throws RemoteException;
 }
