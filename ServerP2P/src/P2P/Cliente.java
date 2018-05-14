@@ -125,7 +125,7 @@ public class Cliente {
                 System.out.println("Aplicação Finalizada");
                 return false;
             case 1:
-                download();
+                download("lala");
                 break;
             case 2:
                 printFiles();
@@ -209,7 +209,7 @@ public class Cliente {
             for(Usuario u : users) {
                 for( Arquivo a : u.getFiles()) {
                     if (a.getNome().contains(File)) {
-                        u.getCallback().downloadFile(u.getNome(), a.getNome());
+                        u.getCallback().downloadFile(u, a.getNome());
                     }
                 }
             }
