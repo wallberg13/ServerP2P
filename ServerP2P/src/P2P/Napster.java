@@ -57,13 +57,13 @@ public class Napster extends UnicastRemoteObject implements iNapster {
         Usuario rem = null;
         
         for(Usuario aux: usersConectados){
-            if(!aux.equals(e)){
+            if(!aux.getNome().equals(e.getNome())){
                 aux.getCallback().rmUserAvailable(e);
             }else{
                 rem = aux;
             }
         }
-        System.out.println("Usuario " + rem.getNome() + " não está mais disponivel!");
+        System.out.println("Usuario " + e.getNome() + " não está mais disponivel!");
         usersConectados.remove(rem);
     }
 

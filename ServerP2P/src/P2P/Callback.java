@@ -53,7 +53,7 @@ public class Callback extends UnicastRemoteObject implements ICallback{
     public void rmUserAvailable(Usuario user) throws RemoteException {
         Usuario rem = null;
         for(Usuario us: cli.getUsers()){
-            if(us.equals(user)){
+            if(us.getNome().equals(user.getNome())){
                 rem = us;
                 break;
             }
@@ -62,18 +62,8 @@ public class Callback extends UnicastRemoteObject implements ICallback{
             cli.getUsers().remove(rem);
             cli.getLog().add("Usuario " + rem.getNome() + " saiu");
         }else{
-            System.out.println("Usuario não encontrado!!");
+            cli.getLog().add("Usuario não encontrado!!");
         }
-    }
-    
-    /**
-     * Deixa em branco por enquanto
-     * @param file
-     * @throws RemoteException 
-     */
-    @Override
-    public void uploadFile(String file) throws RemoteException {
-        
     }
     
     /** 
@@ -82,7 +72,7 @@ public class Callback extends UnicastRemoteObject implements ICallback{
      * @return 
      */
     @Override
-    public byte[] downloadFile(Usuario u, String file) throws RemoteException {
+    public byte[] uploadFile(Usuario u, String file) throws RemoteException {
         try {
             byte[] ret;
             Path files = FileSystems.getDefault().getPath(u.getDirUp(), file);

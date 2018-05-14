@@ -72,7 +72,7 @@ public class Usuario implements Serializable{
     public void printFiles(){
         System.out.println("Arquivos disponiveis com: " + nome);
         for(Arquivo aux: files){
-            System.out.println("\t" + aux.getNome() + " Tamanho: " + aux.getSize() + " bytes");
+            System.out.println("\t" + aux.getNome() + " Tamanho: " + aux.getSize()/1024 + " KB");
         }
     }
 }

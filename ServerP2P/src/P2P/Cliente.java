@@ -27,9 +27,15 @@ import java.rmi.RemoteException;
 import java.rmi.registry.*;
 import java.rmi.registry.LocateRegistry;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.rmi.NotBoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * O Cliente deve possuir:
@@ -109,7 +115,7 @@ public class Cliente {
 
     private Boolean menu(){
         int resp;
-        System.out.println("--- Informações do Cliente ---");
+        System.out.println("\n--- Informações do Cliente ---");
         System.out.println("User: " + user.getNome());
         System.out.println("Pasta Upload: " + user.getDirUp());
         System.out.println("Pasta Download: " + user.getDirDown());
@@ -119,13 +125,17 @@ public class Cliente {
         System.out.println("3 - Imprimir Log");
         System.out.println("0 - Sair");
         System.out.print("Digite: "); resp = teclado.nextInt();
-        
+        System.out.println("---\t---");
         switch(resp){
             case 0:
                 System.out.println("Aplicação Finalizada");
                 return false;
             case 1:
-                download("lala");
+                String x;
+                Scanner aux = new Scanner(System.in);
+                System.out.print("Digite o nome do arquivo: "); 
+                x = aux.nextLine();
+                download(x);
                 break;
             case 2:
                 printFiles();
@@ -137,7 +147,6 @@ public class Cliente {
                 System.out.println("Opção não disponivel!!");
                 break;
         }
-        
         return true;
     }
     
@@ -166,20 +175,19 @@ public class Cliente {
         } catch (RemoteException ex){
             System.err.println(ex);
         }
-        System.out.println("Conectado com sucesso");
-        //Fica executando o menu infinitamente - Ate o usuario nao quiser              
         
-        //Essa parte do codigo poderia ser em uma linha
+        while(menu()); // Menu de usuario
         
-        while(menu());
-        
+        /**
+         *  Informar o Servidor o logout do usuario 
+         */
         try{
             servidor.logout(user);
         } catch(RemoteException ex){
             System.err.println(ex.getMessage());
         }
         
-                
+        
     }   
     
     // Funções do menu
@@ -188,7 +196,7 @@ public class Cliente {
      * Função que tem como objetivo listar todos os arquivos disponiveis
      */
     public void printFiles(){
-        System.out.println("--- Lista de Arquivos ---");
+        System.out.println("\n--- Lista de Arquivos ---");
         try {
             users = servidor.getUsers();
         } catch (RemoteException ex) {
@@ -197,33 +205,64 @@ public class Cliente {
         for(Usuario x: users){
             x.printFiles();
         }
+        System.out.println("--- Fim de Lista de Arquivo ---");
     }
     
     /**
-     * Função que tem como objetivo pedir o nome do arquivo para download, e fazer download do mesmo.
-     * --- Aqui vai ter magia
+     * Método que tem como funcionalidade encontrar o arquivo que o usuario deseja
+     * realizar o download, achar onde o arquivo está, ou mais precisamente,
+     * com qual usuario está, e solitar deste o usuario um array de bytes.
+     * Depois que o usuario, dono do arquivo, retorna o array de bytes do arquivo,
+     * o mesmo é salvo com seu respectivo nome na pasta de download do usuario que 
+     * solicitou o arquivo.
      */
-    public void download(String File){
-        //achar de quem é o arquivo e chamar o callback deste usuário
+    public void download(String arquivo){
+        //achar de quem é o arquivo e chamar o callback de upload deste usuário
+        System.out.println("\n--- Download do Arquivo " + arquivo + " ---");
+        byte file[] = null;
         try {
             for(Usuario u : users) {
                 for( Arquivo a : u.getFiles()) {
-                    if (a.getNome().contains(File)) {
-                        u.getCallback().downloadFile(u, a.getNome());
+                    if (a.getNome().equals(arquivo)) {
+                        System.out.println("Realizando Download do Arquivo");
+                        file = u.getCallback().uploadFile(u, a.getNome());
+                        break;
                     }
                 }
             }
         } catch(RemoteException e) {
             System.err.print(e.getMessage());
         }
+        // Salvando o Arquivo
+        File save = new File(user.getDirDown()+"/"+arquivo);
+        try{
+            FileOutputStream out = new FileOutputStream(save);
+            out.write(file);
+            out.close();
+            System.out.println("--- Download completo ---");
+        } catch(FileNotFoundException ex){
+            System.out.println("--- Arquivo não encontrado ---");
+        } catch (IOException ex) {
+            System.out.println("--- Deu Pau!! ---");
+        } catch (NullPointerException ex){
+            System.out.println("--- Arquivo não existe ---");
+        }
     }
     
+    /**
+     * Log recebido pelo servidor.
+     * Este log serve para manter o usuario informado do que acontece
+     * nos outros clientes, assim ele sabe quem está disponivel e quem não esta.
+     */
     public void printLog(){
+        System.out.println("\n--- Log do Servidor ---");
         for(String aux: log){
             System.out.println(aux);
         }
+        System.out.println("--- Fim Log ---");
     }
 
+    
     public ArrayList<String> getLog(){
         return log;
     }
@@ -232,12 +271,18 @@ public class Cliente {
         return users;
     }
     
+    /** 
+     * Método para listar todos os arquivos na pasta de upload
+     * e atribui-la aos clientes.
+     */
     private ArrayList<Arquivo> addFiles(File[] files) {
         ArrayList<Arquivo> x = new ArrayList<>();
-        for(File y : files) 
-            if(y.isFile()) x.add(new Arquivo(y.getName(), y.length()));
-        
-        
+        try{
+            for(File y : files) 
+                if(y.isFile()) x.add(new Arquivo(y.getName(), y.length()));
+        } catch (NullPointerException ex){
+            System.out.println("Pasta não encontrada");
+        }
         return x;
     }
 }
